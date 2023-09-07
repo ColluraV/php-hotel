@@ -131,14 +131,14 @@ $prckCheck = $_GET['Pcheck'] ?? 'null';/**/
                     <?php
                 foreach ($hotels as $key => $singleHotel) {
 
-                    $toPrint = (!$search && $prckCheck == 'null') //NO PARKing SELECTED, NO SRCH AND NO VOTES
-                                || ( $search && str_contains(strtolower($singleHotel['name']), strtolower($search)) && $prckCheck == 'null') //SRC BUT NO PARKing AND NO VOTES
-                                || ( $search && str_contains(strtolower($singleHotel['name']), strtolower($search)) && $prckCheck == $singleHotel['parking']) //SRC AND PARKing BUT NO VOTES
-                                || ( !$search && $prckCheck == $singleHotel['parking']) ;//PARKing SELECTED BUT NO SRCH AND NO VOTES
-                                                                                        //NO PARKing SELECTED AND NO SRCH 
-                                                                                        //SRC BUT NO PARKing
-                                                                                        //SRC AND PARKing
-                                                                                        //PARKing SELECTED BUT NO SRCH
+                    $toPrint = (!$search && $prckCheck == 'null' && !$hStars) //NO PARKing SELECTED, NO SRCH AND NO VOTES
+                                || ( $search && str_contains(strtolower($singleHotel['name']), strtolower($search)) && $prckCheck == 'null' && !$hStars) //SRC BUT NO PARKing AND NO VOTES
+                                || ( $search && str_contains(strtolower($singleHotel['name']), strtolower($search)) && $prckCheck == $singleHotel['parking'] && !$hStars) //SRC AND PARKing BUT NO VOTES
+                                || ( !$search && $prckCheck == $singleHotel['parking'] && !$hStars) //PARKing SELECTED BUT NO SRCH AND NO VOTES
+                                || (!$search && $prckCheck == 'null' && $hStars >= $singleHotel['vote']) //NO PARKing SELECTED AND NO SRCH BUT VOTES 
+                                || ( $search && str_contains(strtolower($singleHotel['name']), strtolower($search)) && $prckCheck == 'null' && $hStars >= $singleHotel['vote'])//SRC AND VOTES BUT NO PARKing
+                                || ( !$search && $prckCheck == $singleHotel['parking'] && $hStars >= $singleHotel['vote'])//PARKing SELECTED AND VOTES BUT NO SRCH 
+                                || ( $search && str_contains(strtolower($singleHotel['name']), strtolower($search)) && $prckCheck == $singleHotel['parking'] && $hStars >= $singleHotel['vote']);//SRC AND PARKING AND VOTES
                     if($toPrint){
                 ?>
                     <ul class="list-group list-group-horizontal  text-center">
