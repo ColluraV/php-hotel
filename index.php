@@ -3,35 +3,35 @@ $hotels = [
 
     [
         'name' => 'Hotel Belvedere',
-        'description' => 'Hotel Belvedere Descrizione',
+        'description' => 'Qui si vedono solo bei sederi',
         'parking' => true,
         'vote' => 4,
         'distance_to_center' => 10.4
     ],
     [
         'name' => 'Hotel Futuro',
-        'description' => 'Hotel Futuro Descrizione',
+        'description' => 'Esattamente come immaginate temperatura media 40° in stanza e tifoni casuali',
         'parking' => true,
         'vote' => 2,
         'distance_to_center' => 2
     ],
     [
         'name' => 'Hotel Rivamare',
-        'description' => 'Hotel Rivamare Descrizione',
+        'description' => 'Abbiamo problemi di acqua alta',
         'parking' => false,
         'vote' => 1,
         'distance_to_center' => 1
     ],
     [
         'name' => 'Hotel Bellavista',
-        'description' => 'Hotel Bellavista Descrizione',
+        'description' => 'Come dice il nome si vedono tizie in topless',
         'parking' => false,
         'vote' => 5,
         'distance_to_center' => 5.5
     ],
     [
         'name' => 'Hotel Milano',
-        'description' => 'Hotel Milano Descrizione',
+        'description' => 'Luogo di soggiorno per maranza',
         'parking' => true,
         'vote' => 2,
         'distance_to_center' => 50
@@ -71,7 +71,7 @@ $hName = $_GET['name'] ?? '';
 
                     <div class="card-body">
                         <div class="mb-3">
-                            <label>Nome Hotel</label>
+
                             <input type="text" placeholder="Inserisci l'hotel da cercare" class="form-control" name="name">
                             <select class="form-select form-select-lg mb-3 my-3" aria-label="Large select example">
                                 <option selected>Seleziona il numero di stelle</option>
@@ -81,29 +81,26 @@ $hName = $_GET['name'] ?? '';
                                 <option value="3">Quattro Stelle</option>
                                 <option value="3">Cinque Stelle</option>
                             </select>
+
+                            <div class="d-flex">
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        Nessun Parcheggio
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                    <label class="form-check-label" for="flexRadioDefault2">
+                                        Parcheggio Riservato
+                                    </label>
+                                </div>
+
+                            </div>
+
+
                         </div>
-
-                        <div class="container">
-                                <!-- singola riga da moltiplicare nel foreach -->
-                            <?php
-                              foreach ($hotels as $singleHotel) {
-
-                                  // devo stampare l'html della card del prodotto
-                              ?>
-                                <ul class="list-group list-group-horizontal">
-                                  <li class="list-group-item"><h5><?php echo $singleHotel ?></h5></li>
-                                  <li class="list-group-item">A second item</li>
-                                  <li class="list-group-item">A third item</li>
-                                </ul>
-
-                            <?php } ?>  
-
-
-
-                        </div>
-
-
-
 
                     </div>
 
@@ -111,6 +108,37 @@ $hName = $_GET['name'] ?? '';
 
                 </div>
             </form>
+
+            <div class="container my-5">
+                <!-- singola riga da moltiplicare nel foreach -->
+
+                <ul class="list-group list-group-horizontal text-center ">
+                    <li class="list-group-item col-2"> Nome Hotel</li>
+                    <li class="list-group-item d-flex flex-grow-1"> Descrizione</li>
+                    <li class="list-group-item col-1"> voto</li>
+                    <li class="list-group-item col-1"> distanza dal centro</li>
+                </ul>
+                <?php
+                foreach ($hotels as $singleHotel) {
+
+                    // devo stampare l'html della card del prodotto
+                ?>
+                    <ul class="list-group list-group-horizontal  text-center">
+                        <li class="list-group-item col-2">
+                            <h5><?php echo $singleHotel['name'] ?></h5>
+                        </li>
+                        <li class="list-group-item d-flex flex-grow-1"><?php echo $singleHotel['description'] ?></li>
+
+                        <li class="list-group-item col-1"><?php echo $singleHotel['vote'] ?></li>
+                        <li class="list-group-item col-1"><?php echo $singleHotel['distance_to_center'] ?></li>
+                    </ul>
+
+                <?php } ?>
+
+
+
+            </div>
+
 
         </div>
     </div>
