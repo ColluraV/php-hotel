@@ -39,7 +39,10 @@ $hotels = [
 
 ];
 
-$hName = $_GET['name'] ?? '';
+$search = $_GET['search'] ?? '';
+$searched = '';
+$hStars = $_GET['stars']  ?? '';
+$prckCheck = $_GET['Pcheck'] ?? 'null';/**/
 ?>
 
 
@@ -67,13 +70,15 @@ $hName = $_GET['name'] ?? '';
         <div class="row">
 
             <form action="index.php" class="card" method="GET">
-                <div class="card-body">
+                <div class="card-body text-center">
 
                     <div class="card-body">
                         <div class="mb-3">
 
-                            <input type="text" placeholder="Inserisci l'hotel da cercare" class="form-control" name="name">
-                            <select class="form-select form-select-lg mb-3 my-3" aria-label="Large select example">
+                            <input type="text" placeholder="Inserisci l'hotel da cercare" class="form-control" name="search">
+
+                    <!--////////////////////////////////////////////////////////////////////  filtri selezione ////////////////////////////////////////////////////////////////////-->
+                            <select name="stars" class="form-select form-select-lg mb-3 my-3" aria-label="Large select example">    
                                 <option selected>Seleziona il numero di stelle</option>
                                 <option value="1">Una stella</option>
                                 <option value="2">Due Stelle</option>
@@ -82,16 +87,16 @@ $hName = $_GET['name'] ?? '';
                                 <option value="3">Cinque Stelle</option>
                             </select>
 
-                            <div class="d-flex">
+                            <div class="d-flex text-center w-100">
 
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                    <input class="form-check-input" type="radio" name="Pcheck" id="flexRadioDefault1" value="0" >
                                     <label class="form-check-label" for="flexRadioDefault1">
                                         Nessun Parcheggio
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                    <input class="form-check-input" type="radio" name="Pcheck" id="flexRadioDefault2" value="1" > 
                                     <label class="form-check-label" for="flexRadioDefault2">
                                         Parcheggio Riservato
                                     </label>
@@ -104,13 +109,14 @@ $hName = $_GET['name'] ?? '';
 
                     </div>
 
-                    <button class="btn btn-primary mx-auto" type="submit">conferma</button>
+                    <button class="btn btn-primary" type="submit">conferma</button>
 
                 </div>
             </form>
 
             <div class="container my-5">
-                <!-- singola riga da moltiplicare nel foreach -->
+
+                    <!--/////////   casella dinamica  /////////-->
 
                 <ul class="list-group list-group-horizontal text-center ">
                     <li class="list-group-item col-2"> Nome Hotel</li>
@@ -118,10 +124,22 @@ $hName = $_GET['name'] ?? '';
                     <li class="list-group-item col-1"> voto</li>
                     <li class="list-group-item col-1"> distanza dal centro</li>
                 </ul>
-                <?php
-                foreach ($hotels as $singleHotel) {
 
-                    // devo stampare l'html della card del prodotto
+
+                <!--/////////   elemento clonato  /////////-->
+
+                    <?php
+                foreach ($hotels as $key => $singleHotel) {
+
+                    $toPrint = (!$search && $prckCheck == 'null') //NO PARKing SELECTED, NO SRCH AND NO VOTES
+                                || ( $search && str_contains(strtolower($singleHotel['name']), strtolower($search)) && $prckCheck == 'null') //SRC BUT NO PARKing AND NO VOTES
+                                || ( $search && str_contains(strtolower($singleHotel['name']), strtolower($search)) && $prckCheck == $singleHotel['parking']) //SRC AND PARKing BUT NO VOTES
+                                || ( !$search && $prckCheck == $singleHotel['parking']) ;//PARKing SELECTED BUT NO SRCH AND NO VOTES
+                                                                                        //NO PARKing SELECTED AND NO SRCH 
+                                                                                        //SRC BUT NO PARKing
+                                                                                        //SRC AND PARKing
+                                                                                        //PARKing SELECTED BUT NO SRCH
+                    if($toPrint){
                 ?>
                     <ul class="list-group list-group-horizontal  text-center">
                         <li class="list-group-item col-2">
@@ -133,7 +151,10 @@ $hName = $_GET['name'] ?? '';
                         <li class="list-group-item col-1"><?php echo $singleHotel['distance_to_center'] ?></li>
                     </ul>
 
-                <?php } ?>
+                <?php
+                }//chiusura if
+                }//chiusura foreach 
+                ?>
 
 
 
